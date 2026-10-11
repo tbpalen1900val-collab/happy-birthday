@@ -1,0 +1,481 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For My Favorite Person 💗</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Georgia, serif;
+  background: linear-gradient(135deg, #ffe1eb, #fff0f5, #ffd6e3);
+  color: #7e354c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px 15px;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+}
+
+h1 {
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.heart {
+  color: #e85d83;
+  animation: heartbeat 1.2s infinite;
+  display: inline-block;
+}
+
+@keyframes heartbeat {
+  50% { transform: scale(1.25); }
+}
+
+/* ENVELOPE CONTAINER */
+.envelope-area {
+  margin: 55px auto 25px;
+  cursor: pointer;
+  perspective: 1000px;
+  width: min(290px, 82vw);
+}
+
+.envelope {
+  width: 100%;
+  height: 185px;
+  margin: auto;
+  position: relative;
+  background: #f9a9bd;
+  border-radius: 8px;
+  box-shadow: 0 12px 30px #c86c8833;
+  transition: transform 0.3s;
+  isolation: isolate;
+}
+
+.envelope:hover {
+  transform: translateY(-5px);
+}
+
+/* BOYFRIEND'S PHOTO */
+.photo-inside {
+  position: absolute;
+  width: 125px;
+  height: 145px;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  padding: 6px;
+  background: #fffaf5;
+  border-radius: 5px;
+  box-shadow: 0 3px 12px #7e354c35;
+  z-index: 1;
+  transition:
+    bottom 0.8s ease,
+    transform 0.8s ease,
+    z-index 0s;
+}
+
+.boyfriend-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 3px;
+}
+
+/* ENVELOPE FRONT: COVERS THE LOWER PART OF THE PHOTO */
+.envelope-front {
+  position: absolute;
+  inset: 0;
+  background: #f9a9bd;
+  clip-path: polygon(
+    0 0,
+    50% 58%,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+  border-radius: 8px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* OPENING TRIANGULAR FLAP */
+.envelope-flap {
+  position: absolute;
+  inset: 0;
+  background: #ffc6d5;
+  clip-path: polygon(0 0, 50% 58%, 100% 0);
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transition:
+    transform 0.7s ease,
+    background 0.7s ease;
+  backface-visibility: hidden;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* HEART SEAL */
+.envelope-heart {
+  position: absolute;
+  top: 67px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 27px;
+  color: #e6537c;
+  z-index: 5;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* LABEL */
+.flap-label {
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+  color: #8c3450;
+  font-size: 14px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ENVELOPE OPEN ANIMATION */
+.envelope.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 0;
+}
+
+.envelope.open .envelope-heart {
+  opacity: 0;
+}
+
+/* PHOTO SLIDES UP INTO VIEW */
+.envelope.open .photo-inside {
+  bottom: 75px;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+/* HINT */
+.hint {
+  font-size: 0.95rem;
+  animation: fade 2s infinite alternate;
+}
+
+@keyframes fade {
+  to { opacity: 0.55; }
+}
+
+/* LETTER */
+.letter {
+  display: none;
+  background: #fffaf5;
+  padding: 30px 25px;
+  margin-top: 35px;
+  border-radius: 12px;
+  box-shadow: 0 12px 35px #b9577430;
+  text-align: left;
+  line-height: 1.9;
+}
+
+.letter.show {
+  display: block;
+  animation: appear 0.8s ease;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.letter h2 {
+  text-align: center;
+  color: #d94f79;
+  line-height: 1.4;
+}
+
+.signature {
+  text-align: right;
+  margin-top: 25px;
+  font-style: italic;
+}
+
+button {
+  background: #e96b8b;
+  color: white;
+  border: none;
+  padding: 13px 25px;
+  margin-top: 22px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: inherit;
+  box-shadow: 0 5px 15px #e96b8b40;
+}
+
+button:hover {
+  background: #d94f79;
+}
+
+/* FLOATING HEARTS */
+#hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -30px;
+  animation: float-up 4s linear forwards;
+  opacity: 0.8;
+}
+
+@keyframes float-up {
+  to {
+    transform: translateY(-110vh) rotate(30deg);
+    opacity: 0;
+  }
+}
+
+footer {
+  margin-top: 30px;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* SMALL SCREENS */
+@media (max-width: 380px) {
+  .envelope {
+    height: 170px;
+  }
+
+  .photo-inside {
+    width: 112px;
+    height: 130px;
+  }
+
+  .envelope.open .photo-inside {
+    bottom: 68px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="hearts"></div>
+
+<main class="container">
+
+  <p>For my favorite person <span class="heart">♥</span></p>
+
+  <h1>Happy Birthday, My Dookie Pie!</h1>
+
+  <p class="subtitle">
+    Today is the perfect day to remind you
+    how special you are and how much you
+    mean to me. 💗
+  </p>
+
+  <!-- CLICKABLE ENVELOPE -->
+  <div
+    class="envelope-area"
+    id="envelopeArea"
+    onclick="openLetter()"
+    role="button"
+    tabindex="0"
+    aria-label="Open your birthday letter"
+    onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openLetter(); }"
+  >
+
+    <div class="envelope" id="envelope">
+
+      <!-- KEEP marc.jpg IN THE SAME FOLDER AS index.html -->
+      <div class="photo-inside">
+        <img
+          src="marc.jpg"
+          alt="My favorite person"
+          class="boyfriend-photo"
+        >
+      </div>
+
+      <div class="envelope-front"></div>
+      <div class="envelope-flap"></div>
+
+      <div class="envelope-heart">♥</div>
+
+      <div class="flap-label">
+        A little letter for you ♡
+      </div>
+
+    </div>
+  </div>
+
+  <p class="hint" id="hint">
+    ♡ Click the envelope to open your letter ♡
+  </p>
+
+  <!-- BIRTHDAY LETTER -->
+  <section class="letter" id="letter">
+
+    <h2>To My Dearest Dookie Pie ♡</h2>
+
+    <p>Happy birthday, Dookie Pie!!! 🎂</p>
+
+    <p>
+      If there's one thing I want you to know today,
+      it's how grateful I am that you exist and that
+      I get to be part of your life.
+    </p>
+
+    <p>
+      You make my ordinary days feel special in ways
+      you probably don't even realize. Your smile,
+      your laugh, your presence, and even the smallest
+      things you do mean more to me than words can say.
+    </p>
+
+    <p>
+      On your special day, I hope life gives you all
+      the happiness you deserve. I hope your dreams
+      come true, your worries become lighter, and you
+      always remember how loved and appreciated you are.
+    </p>
+
+    <p>
+      I may not always find the perfect words to explain
+      how much you mean to me, but I promise to keep
+      choosing you, supporting you, and cheering for you.
+      I'm so proud of the person you are and the person
+      you're becoming.
+    </p>
+
+    <p>
+      Thank you for being you, Honey ko.
+      You are one of my favorite parts of life,
+      and I hope I can make you feel as special
+      as you make me feel every time.
+    </p>
+
+    <p>
+      Happy birthday once again, Honey.
+      Here's to more memories, more laughter,
+      more adventures, and more birthdays together. ♡
+    </p>
+
+    <p class="signature">
+      I love you always and forever.💗<br>
+      Always yours,<br>
+      Your favorite person:<br>
+      Pookie Pie ♡
+    </p>
+
+    <button type="button" onclick="closeLetter(event)">
+      Close Letter ♡
+    </button>
+
+  </section>
+
+  <footer>
+    Made this personally, just for you. ♡
+  </footer>
+
+</main>
+
+<script>
+const envelope = document.getElementById("envelope");
+const letter = document.getElementById("letter");
+const hint = document.getElementById("hint");
+
+let isOpen = false;
+
+function openLetter() {
+  // Prevent repeated clicks while the envelope is already open
+  if (isOpen) return;
+
+  isOpen = true;
+
+  envelope.classList.add("open");
+  letter.classList.add("show");
+
+  hint.textContent =
+    "A little piece of my heart, just for you ♡";
+
+  // Create floating hearts
+  for (let i = 0; i < 18; i++) {
+    setTimeout(createHeart, i * 120);
+  }
+
+  // Scroll the letter into view on phones
+  setTimeout(() => {
+    letter.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }, 250);
+}
+
+function closeLetter(event) {
+  event.stopPropagation();
+
+  isOpen = false;
+
+  letter.classList.remove("show");
+  envelope.classList.remove("open");
+
+  hint.textContent =
+    "♡ Click the envelope to open your letter ♡";
+}
+
+function createHeart() {
+  const heart = document.createElement("span");
+
+  heart.className = "floating-heart";
+  heart.textContent = Math.random() > 0.5 ? "♥" : "♡";
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize =
+    (16 + Math.random() * 22) + "px";
+
+  heart.style.color =
+    Math.random() > 0.5 ? "#ed7094" : "#bd6aab";
+
+  document.getElementById("hearts").appendChild(heart);
+
+  setTimeout(() => heart.remove(), 4000);
+}
+</script>
+
+</body>
+</html>

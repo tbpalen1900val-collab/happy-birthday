@@ -1,0 +1,282 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 35px 16px;
+  font-family: Georgia, "Times New Roman", serif;
+  color: #78384d;
+  background: linear-gradient(135deg, #ffe0e9, #fff1f5, #ffd2df);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 650px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+h1 {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 1.15;
+  margin: 20px 0;
+}
+
+.subtitle {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.heart {
+  color: #ed6b91;
+  display: inline-block;
+  animation: heartbeat 1.2s infinite;
+}
+
+@keyframes heartbeat {
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+/* Envelope area */
+
+.envelope-area {
+  width: 100%;
+  margin: 65px auto 25px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.envelope {
+  width: min(340px, 85vw);
+  height: 210px;
+  position: relative;
+  margin: auto;
+  border-radius: 12px;
+  background: #f8a5bb;
+  box-shadow: 0 15px 35px #bd647a30;
+  isolation: isolate;
+}
+
+/* Boyfriend's picture */
+
+.photo-inside {
+  position: absolute;
+  inset: 8px;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff0f5;
+}
+
+.boyfriend-photo {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Front of envelope */
+
+.envelope-front {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #f8a5bb;
+  border-radius: 12px;
+  clip-path: polygon(
+    0 0,
+    50% 56%,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+}
+
+/* Opening flap */
+
+.envelope-flap {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: #ffc6d6;
+  clip-path: polygon(0 0, 100% 0, 50% 60%);
+  transform-origin: top center;
+  transition: transform 0.8s ease;
+  backface-visibility: hidden;
+}
+
+.envelope.open .envelope-flap {
+  transform: rotateX(180deg);
+}
+
+/* Heart seal */
+
+.envelope-heart {
+  position: absolute;
+  z-index: 5;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #df5278;
+  font-size: 48px;
+  transition: opacity 0.3s ease;
+}
+
+.envelope.open .envelope-heart {
+  opacity: 0;
+}
+
+/* Envelope label */
+
+.flap-label {
+  position: absolute;
+  bottom: 18px;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  text-align: center;
+  color: #853c53;
+  font-size: 15px;
+}
+
+/* Instruction text */
+
+.hint {
+  font-size: 1rem;
+  animation: gentleFade 2s infinite alternate;
+}
+
+@keyframes gentleFade {
+  to {
+    opacity: 0.55;
+  }
+}
+
+/* Love letter */
+
+.letter {
+  display: none;
+  max-width: 540px;
+  width: 100%;
+  margin: 35px auto 0;
+  padding: 35px;
+  background: #fffaf4;
+  border: 1px solid #f8d9df;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px #b9577425;
+  text-align: left;
+  line-height: 1.9;
+  position: relative;
+}
+
+.letter.show {
+  display: block;
+  animation: letterAppear 0.8s ease both;
+}
+
+@keyframes letterAppear {
+  from {
+    opacity: 0;
+    transform: translateY(25px) rotate(-1deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+.letter h2 {
+  color: #d94f79;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.signature {
+  text-align: right;
+  margin-top: 25px;
+  font-style: italic;
+}
+
+/* Buttons */
+
+button {
+  display: block;
+  margin: 25px auto 0;
+  padding: 13px 28px;
+  border: none;
+  border-radius: 30px;
+  background: #e96b8b;
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px #e96b8b40;
+  transition: transform 0.2s, background 0.2s;
+}
+
+button:hover {
+  background: #d94f79;
+  transform: translateY(-2px);
+}
+
+/* Floating hearts */
+
+#hearts {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -35px;
+  animation: floatUp 4s linear forwards;
+  opacity: 0.85;
+}
+
+@keyframes floatUp {
+  to {
+    transform: translateY(-110vh) rotate(35deg);
+    opacity: 0;
+  }
+}
+
+/* Footer */
+
+footer {
+  margin-top: 30px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Responsive design for phones */
+
+@media (max-width: 480px) {
+  body {
+    padding: 25px 14px;
+  }
+
+  .envelope {
+    height: 175px;
+  }
+
+  .letter {
+    padding: 24px 20px;
+    font-size: 0.95rem;
+  }
+}

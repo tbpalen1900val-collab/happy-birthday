@@ -1,0 +1,684 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For My Favorite Person 💗</title>
+
+<!-- ROMANTIC FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Playfair Display', Georgia, serif;
+  background: linear-gradient(135deg, #ffe1eb, #fff0f5, #ffd6e3);
+  background-size: 200% 200%;
+  animation: backgroundGlow 12s ease infinite;
+  color: #7e354c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 35px 15px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+@keyframes backgroundGlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.container {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* INTRODUCTION */
+.intro {
+  font-family: 'Dancing Script', cursive;
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 15px;
+  color: #a83f60;
+}
+
+.subtitle {
+  font-family: 'Dancing Script', cursive;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1.6;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.heart {
+  display: inline-block;
+  color: #e85d83;
+  animation: heartbeat 1.2s infinite;
+}
+
+@keyframes heartbeat {
+  50% { transform: scale(1.25); }
+}
+
+/* FALLING HEART BACKGROUND */
+#hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.falling-heart {
+  position: absolute;
+  top: -35px;
+  left: 0;
+  line-height: 1;
+  user-select: none;
+  will-change: transform, opacity;
+  animation: fallDown linear forwards;
+}
+
+@keyframes fallDown {
+  0% {
+    transform: translate3d(0, -5vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: var(--heart-opacity, 0.7);
+  }
+
+  85% {
+    opacity: var(--heart-opacity, 0.7);
+  }
+
+  100% {
+    transform: translate3d(var(--drift, 30px), 110vh, 0)
+      rotate(var(--rotation, 240deg));
+    opacity: 0;
+  }
+}
+
+/* EXTRA HEART BURST WHEN OPENING THE LETTER */
+.burst-heart {
+  position: fixed;
+  bottom: -30px;
+  pointer-events: none;
+  animation: burstUp 4.5s ease-out forwards;
+}
+
+@keyframes burstUp {
+  0% {
+    transform: translateY(0) scale(0.5) rotate(0deg);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.9;
+    transform: translateY(-15vh) scale(1) rotate(25deg);
+  }
+
+  100% {
+    transform: translateY(-115vh) scale(1.2) rotate(50deg);
+    opacity: 0;
+  }
+}
+
+/* ENVELOPE */
+.envelope-area {
+  margin: 55px auto 25px;
+  cursor: pointer;
+  perspective: 1000px;
+  width: min(290px, 82vw);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.envelope {
+  width: 100%;
+  height: 185px;
+  margin: auto;
+  position: relative;
+  background: #f9a9bd;
+  border-radius: 8px;
+  box-shadow: 0 12px 30px #c86c8840;
+  transition: transform 0.3s, box-shadow 0.3s;
+  isolation: isolate;
+}
+
+.envelope:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 17px 35px #c86c8850;
+}
+
+/* BOYFRIEND'S PHOTO */
+.photo-inside {
+  position: absolute;
+  width: 125px;
+  height: 145px;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  padding: 6px;
+  background: #fffaf5;
+  border-radius: 5px;
+  box-shadow: 0 3px 12px #7e354c35;
+  z-index: 1;
+  transition:
+    bottom 0.8s ease,
+    transform 0.8s ease,
+    z-index 0s;
+}
+
+.boyfriend-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 3px;
+}
+
+/* ENVELOPE FRONT */
+.envelope-front {
+  position: absolute;
+  inset: 0;
+  background: #f9a9bd;
+  clip-path: polygon(
+    0 0,
+    50% 58%,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+  border-radius: 8px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ENVELOPE FLAP */
+.envelope-flap {
+  position: absolute;
+  inset: 0;
+  background: #ffc6d5;
+  clip-path: polygon(0 0, 50% 58%, 100% 0);
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transition: transform 0.7s ease;
+  backface-visibility: hidden;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* HEART SEAL */
+.envelope-heart {
+  position: absolute;
+  top: 67px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+  color: #e6537c;
+  z-index: 5;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* ENVELOPE LABEL */
+.flap-label {
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+  color: #8c3450;
+  font-family: 'Dancing Script', cursive;
+  font-size: 19px;
+  font-weight: 600;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* OPENING ANIMATION */
+.envelope.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 0;
+}
+
+.envelope.open .envelope-heart {
+  opacity: 0;
+}
+
+.envelope.open .photo-inside {
+  bottom: 75px;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+/* HINT */
+.hint {
+  font-family: 'Dancing Script', cursive;
+  font-size: 22px;
+  font-weight: 600;
+  animation: hintFade 2s infinite alternate;
+}
+
+@keyframes hintFade {
+  to { opacity: 0.55; }
+}
+
+/* LETTER */
+.letter {
+  display: none;
+  background: #fffaf5;
+  padding: 30px 25px;
+  margin-top: 35px;
+  border: 1px solid #f8dce5;
+  border-radius: 12px;
+  box-shadow: 0 12px 35px #b9577430;
+  text-align: left;
+  font-family: 'Dancing Script', cursive;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.8;
+  letter-spacing: 0.2px;
+  color: #704052;
+}
+
+.letter.show {
+  display: block;
+  animation: letterAppear 0.9s ease both;
+}
+
+@keyframes letterAppear {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.letter h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(21px, 5vw, 26px);
+  font-weight: 600;
+  text-align: center;
+  color: #d94f79;
+  line-height: 1.5;
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+
+.letter p:first-of-type {
+  font-weight: 700;
+  color: #c34f75;
+}
+
+.signature {
+  font-family: 'Dancing Script', cursive;
+  font-size: 25px;
+  font-weight: 600;
+  text-align: right;
+  margin-top: 30px;
+  line-height: 1.8;
+  color: #a83f60;
+}
+
+/* BUTTON */
+button {
+  background: #e96b8b;
+  color: white;
+  border: none;
+  padding: 13px 25px;
+  margin-top: 22px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14px;
+  box-shadow: 0 5px 15px #e96b8b40;
+  transition: background 0.3s, transform 0.3s;
+}
+
+button:hover {
+  background: #d94f79;
+  transform: translateY(-2px);
+}
+
+/* FOOTER */
+footer {
+  margin-top: 30px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 20px;
+  opacity: 0.85;
+}
+
+/* MOBILE */
+@media (max-width: 380px) {
+  .envelope {
+    height: 170px;
+  }
+
+  .photo-inside {
+    width: 112px;
+    height: 130px;
+  }
+
+  .envelope.open .photo-inside {
+    bottom: 68px;
+  }
+
+  .letter {
+    padding: 25px 20px;
+    font-size: 20px;
+    line-height: 1.75;
+  }
+
+  .subtitle {
+    font-size: 23px;
+  }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
+
+  .heart,
+  .hint {
+    animation: none;
+  }
+
+  .falling-heart,
+  .burst-heart {
+    display: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEARTS APPEAR AS SOON AS THE PAGE OPENS -->
+<div id="hearts" aria-hidden="true"></div>
+
+<main class="container">
+
+  <p class="intro">
+    For my favorite person <span class="heart">♥</span>
+  </p>
+
+  <h1>Happy Birthday, My Dookie Pie!</h1>
+
+  <p class="subtitle">
+    Today is the perfect day to remind you
+    how special you are and how much you
+    mean to me. 💗
+  </p>
+
+  <!-- CLICKABLE ENVELOPE -->
+  <div
+    class="envelope-area"
+    id="envelopeArea"
+    onclick="openLetter()"
+    role="button"
+    tabindex="0"
+    aria-label="Open your birthday letter"
+    onkeydown="if(event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openLetter();
+    }"
+  >
+
+    <div class="envelope" id="envelope">
+
+      <!-- KEEP marc.jpg IN THE SAME FOLDER AS index.html -->
+      <div class="photo-inside">
+        <img
+          src="marc.jpg"
+          alt="My favorite person"
+          class="boyfriend-photo"
+        >
+      </div>
+
+      <div class="envelope-front"></div>
+      <div class="envelope-flap"></div>
+
+      <div class="envelope-heart">♥</div>
+
+      <div class="flap-label">
+        A little letter for you ♡
+      </div>
+
+    </div>
+  </div>
+
+  <p class="hint" id="hint">
+    ♡ Click the envelope to open your letter ♡
+  </p>
+
+  <!-- BIRTHDAY LETTER -->
+  <section class="letter" id="letter">
+
+    <h2>To My Dearest Dookie Pie ♡</h2>
+
+    <p>Happy birthday, Dookie Pie!!! 🎂</p>
+
+    <p>
+      If there's one thing I want you to know today,
+      it's how grateful I am that you exist and that
+      I get to be part of your life.
+    </p>
+
+    <p>
+      You make my ordinary days feel special in ways
+      you probably don't even realize. Your smile,
+      your laugh, your presence, and even the smallest
+      things you do mean more to me than words can say.
+    </p>
+
+    <p>
+      On your special day, I hope life gives you all
+      the happiness you deserve. I hope your dreams
+      come true, your worries become lighter, and you
+      always remember how loved and appreciated you are.
+    </p>
+
+    <p>
+      I may not always find the perfect words to explain
+      how much you mean to me, but I promise to keep
+      choosing you, supporting you, and cheering for you.
+      I'm so proud of the person you are and the person
+      you're becoming.
+    </p>
+
+    <p>
+      Thank you for being you, Honey ko.
+      You are one of my favorite parts of life,
+      and I hope I can make you feel as special
+      as you make me feel every time.
+    </p>
+
+    <p>
+      Happy birthday once again, Honey.
+      Here's to more memories, more laughter,
+      more adventures, and more birthdays together. ♡
+    </p>
+
+    <p class="signature">
+      I love you always and forever. 💗<br>
+      Always yours,<br>
+      Your favorite person:<br>
+      Pookie Pie ♡
+    </p>
+
+    <button type="button" onclick="closeLetter(event)">
+      Close Letter ♡
+    </button>
+
+  </section>
+
+  <footer>
+    Made this personally, just for you. ♡
+  </footer>
+
+</main>
+
+<script>
+const envelope = document.getElementById("envelope");
+const letter = document.getElementById("letter");
+const hint = document.getElementById("hint");
+const heartsContainer = document.getElementById("hearts");
+
+let isOpen = false;
+let heartRainTimer = null;
+
+const prefersReducedMotion =
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* CREATE ONE FALLING HEART */
+function createFallingHeart() {
+  if (prefersReducedMotion) return;
+
+  const heart = document.createElement("span");
+  heart.className = "falling-heart";
+
+  const symbols = ["♡", "♥", "💕", "💗"];
+  const colors = ["#ed7094", "#d94f79", "#f5a3bd", "#bd6aab"];
+
+  heart.textContent =
+    symbols[Math.floor(Math.random() * symbols.length)];
+
+  const size = 12 + Math.random() * 15;
+  const duration = 6 + Math.random() * 7;
+  const drift = (Math.random() - 0.5) * 180;
+  const rotation = (Math.random() - 0.5) * 400;
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = size + "px";
+  heart.style.color =
+    colors[Math.floor(Math.random() * colors.length)];
+
+  heart.style.animationDuration = duration + "s";
+  heart.style.setProperty("--drift", drift + "px");
+  heart.style.setProperty("--rotation", rotation + "deg");
+  heart.style.setProperty(
+    "--heart-opacity",
+    0.35 + Math.random() * 0.45
+  );
+
+  heartsContainer.appendChild(heart);
+
+  setTimeout(() => heart.remove(), duration * 1000 + 500);
+}
+
+/* START THE HEART RAIN AUTOMATICALLY */
+function startHeartRain() {
+  if (prefersReducedMotion || heartRainTimer !== null) return;
+
+  // Show hearts immediately when the page loads.
+  for (let i = 0; i < 12; i++) {
+    setTimeout(createFallingHeart, i * 160);
+  }
+
+  // Continue the gentle heart shower.
+  heartRainTimer = setInterval(createFallingHeart, 420);
+}
+
+/* EXTRA BURST OF HEARTS WHEN THE ENVELOPE OPENS */
+function createBurstHeart() {
+  if (prefersReducedMotion) return;
+
+  const heart = document.createElement("span");
+  heart.className = "burst-heart";
+
+  heart.textContent = Math.random() > 0.5 ? "♥" : "♡";
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (16 + Math.random() * 22) + "px";
+  heart.style.color =
+    Math.random() > 0.5 ? "#ed7094" : "#bd6aab";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 5000);
+}
+
+/* OPEN THE BIRTHDAY LETTER */
+function openLetter() {
+  if (isOpen) return;
+
+  isOpen = true;
+
+  envelope.classList.add("open");
+  letter.classList.add("show");
+
+  hint.textContent =
+    "A little piece of my heart, just for you ♡";
+
+  // A dramatic burst when he opens the envelope.
+  for (let i = 0; i < 22; i++) {
+    setTimeout(createBurstHeart, i * 100);
+  }
+
+  // Bring the letter into view.
+  setTimeout(() => {
+    letter.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "center"
+    });
+  }, 300);
+}
+
+/* CLOSE THE LETTER */
+function closeLetter(event) {
+  event.stopPropagation();
+
+  isOpen = false;
+
+  letter.classList.remove("show");
+  envelope.classList.remove("open");
+
+  hint.textContent =
+    "♡ Click the envelope to open your letter ♡";
+}
+
+/* START WHEN THE PAGE LOADS */
+startHeartRain();
+</script>
+
+</body>
+</html>
